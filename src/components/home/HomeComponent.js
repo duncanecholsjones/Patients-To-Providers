@@ -31,7 +31,7 @@ class HomeComponent extends React.Component {
             <div className="container-fluid">
                 <div className="jumbotron">
                     {this.state.user &&
-                        <a onClick={() => this.handleLogout()} className="btn btn-dark btn-lg" role="button">Logout</a>
+                        <button onClick={() => this.handleLogout()} className="btn btn-secondary">Logout</button>
                     }
                     <h1 className="display-4">Hello, {this.state.user.username}</h1>
                     <p className="lead">Welcome to Patients To Providers!</p>

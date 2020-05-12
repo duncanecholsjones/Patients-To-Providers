@@ -1,10 +1,12 @@
-.container-fluid {
+.login-container {
     background-image: url('background.jpg');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
-/* body img {
-    object-fit: cover;
-} */
+.fail-row {
+    background-color: lightcoral;
+    justify-content: center;
+}
+

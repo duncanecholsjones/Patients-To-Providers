@@ -22,7 +22,12 @@ const login = (userCredentials) =>
             'content-type': 'application/json'
         },
         credentials: "include"
-    }).then(response => response.json())
+    }).then(function(response) {
+        return response.json()
+      }).catch(function(error) {
+        console.log("Failed!", error);
+      })
+
 
 const logout = () =>
     fetch(`http://localhost:8181/api/logout`, {
