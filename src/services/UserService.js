@@ -14,6 +14,12 @@ const getLoggedInUser = () =>
         credentials: "include"
     }).then(response => response.json())
 
+const getOtherUserProfile = (otherUserId) =>
+fetch(`http://localhost:8181/api/otherUser/${otherUserId}`, {
+        method: 'POST',
+        credentials: "include"
+    }).then(response => response.json())
+
 const login = (userCredentials) =>
     fetch(`http://localhost:8181/api/login`, {
         method: 'POST',
@@ -38,6 +44,7 @@ const logout = () =>
 export default {
     createUser,
     getLoggedInUser,
+    getOtherUserProfile,
     login,
     logout
 }

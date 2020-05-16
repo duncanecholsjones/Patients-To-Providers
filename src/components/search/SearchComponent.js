@@ -17,20 +17,21 @@ class SearchComponent extends React.Component {
         this.props.getConditionsAction()
     }
 
-    componentDidUpdate() {
-        this.props.conditions.forEach(element => {
-            this.state.conditionsArray.push(element.Name)
-        })
+    componentDidUpdate(prevProps, prevState) {
+        // shouldComponentUpdate() {
+        // componentWillReceiveProps() {
+        if (prevProps.conditions !== this.props.conditions) {
+            this.props.conditions.forEach(element => {
+                this.state.conditionsArray.push(element.Name)
+            })
+        }
         this.autocomplete(document.getElementById("myInput"), this.state.conditionsArray)
     }
 
     handleLogout() {
         UserService.logout().then(response =>
             this.setState(prevState => ({
-                user: {
-                    ...{},
-                    username: 'guest'
-                }
+                user: {}
             }))
         )
     }
@@ -142,6 +143,11 @@ class SearchComponent extends React.Component {
     render() {
         return (
             <div className="container-fluid">
+                {!this.state.user.username &&
+                    <div className="unlogged-message">
+                        <h5>You are not logged in. <a href="/login">Go to login</a></h5>
+                    </div>
+                }
                 {this.state.user.username &&
                     <div className="row top-row">
                         <button onClick={() => this.handleLogout()} className="btn btn-secondary">Logout</button>
@@ -153,14 +159,14 @@ class SearchComponent extends React.Component {
                     <p className="lead">Enter your condition, disease, or illness (ex. 'Diabetes Type 2')</p>
                     <hr className="my-4" />
                     <p>Searching for your condition allows us to show you other patients who suffer from that same condition as well as providers who specialize in that condition.</p>
-                    
-                        <form autoComplete="off" action="/action_page.php">
-                            <div className="autocomplete">
-                                <input id="myInput" type="text" name="myCondition" placeholder="Search conditions" />
-                            </div>
-                            <input onClick={() => this.handleSearch()} type="submit"/>
-                        </form>
-                    
+
+                    <form autoComplete="off" action="/action_page.php">
+                        <div className="autocomplete">
+                            <input id="myInput" type="text" name="myCondition" placeholder="Search conditions" />
+                        </div>
+                        <input onClick={() => this.handleSearch()} type="submit" />
+                    </form>
+
                 </div>
             </div>
         )

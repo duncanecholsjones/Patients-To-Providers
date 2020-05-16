@@ -8,6 +8,8 @@ import LoginComponent from '../components/login/LoginComponent';
 import SearchComponent from '../components/search/SearchComponent';
 import conditionReducer from '../reducers/conditionReducer';
 import ConditionDetailComponent from '../details/ConditionDetailComponent';
+import ProfileComponent from '../profile/ProfileComponent';
+import VisitOtherProfileComponent from '../profile/VisitOtherProfileComponent';
 
 const rootReducer = combineReducers({
     conditions: conditionReducer
@@ -51,6 +53,24 @@ class HomeContainer extends React.Component {
                         <div>
                             <SearchComponent
                                 history={props.history} />
+                        </div>
+                    }>
+                    </Route>
+                    <Route path="/profile" exact={true} 
+                        render={(props) =>
+                        <div>
+                            <ProfileComponent
+                                history={props.history} />
+                        </div>
+                    }>
+                    </Route>
+                    <Route path="/profile/:profileId" exact={true} 
+                        render={(props) =>
+                        <div>
+                            <VisitOtherProfileComponent
+                                history={props.history}
+                                otherProfileId={props.match.params.profileId}
+                                />
                         </div>
                     }>
                     </Route>

@@ -1,5 +1,9 @@
-/* Source: https://www.w3schools.com/howto/howto_js_autocomplete.asp */
+.unlogged-message {
+  margin-top: 30px;
+  text-align: center;
+}
 
+/* Source: https://www.w3schools.com/howto/howto_js_autocomplete.asp */
 * { box-sizing: border-box; }
 body {
   font: 16px Arial;
