@@ -8,6 +8,8 @@
     text-align: center;
 }
 
-.message-div {
+.message-div, .message-center-jumbotron .row {
     text-align: center;
+    justify-content: center;
+    align-items: center;
 }

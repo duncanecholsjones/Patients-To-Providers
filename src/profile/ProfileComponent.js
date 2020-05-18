@@ -1,15 +1,25 @@
 import React from 'react';
 import UserService from '../services/UserService';
+import MessageService from '../services/MessageService';
+import MessageComponent from '../components/messages/MessageComponent';
 import './ProfileComponentStyles.css';
 
 class ProfileComponent extends React.Component {
 
     state = {
-        user: {}
+        user: {},
+        incomingMessages: [],
+        sentMessages: []
     }
 
     componentDidMount() {
-        UserService.getLoggedInUser().then(actualUser => this.setState({ user: actualUser }))
+        UserService.getLoggedInUser().then(actualUser => {
+            this.setState({ user: actualUser })
+            MessageService.getIncomingMessages(this.state.user.userId)
+                .then(actualMessages => this.setState({ incomingMessages: actualMessages }))
+            MessageService.getOutgoingMessages(this.state.user.userId)
+                .then(actualMessages => this.setState({ sentMessages: actualMessages }))
+        })
     }
 
     render() {
@@ -50,6 +60,44 @@ class ProfileComponent extends React.Component {
                                     </div>
                                 </div>
 
+                            </div>
+                            <div className="col-sm-2">
+                            </div>
+                            <div className="col-sm-4">
+                                <div className="jumbotron message-center-jumbotron">
+                                    <div className="row">
+                                        <h5>Message Center</h5>
+                                    </div>
+                                    <hr className="my-4" />
+                                    <div className="row">
+                                        <h6>Incoming messages:</h6>
+                                        <hr></hr>
+                                        <ul className="container-fluid incoming-message-div">
+                                            {
+                                                this.state.incomingMessages.map((message, index) => {
+                                                    return <MessageComponent
+                                                        key={message.id}
+                                                        message={message}
+                                                    />
+                                                })
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div className="row">
+                                        <h6>Sent messages:</h6>
+                                        <hr></hr>
+                                        <ul className="container-fluid sent-message-div">
+                                            {
+                                                this.state.sentMessages.map((message, index) => {
+                                                    return <MessageComponent
+                                                        key={message.id}
+                                                        message={message}
+                                                    />
+                                                })
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

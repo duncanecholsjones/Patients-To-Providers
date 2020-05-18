@@ -8,6 +8,20 @@ const sendMessage = (message) =>
         credentials: 'include'
     }).then(response => response.json())
 
+const getIncomingMessages = (userId) =>
+    fetch(`http://localhost:8181/api/users/${userId}/messages/incoming`, {
+        method: 'GET',
+        credentials: 'include'
+    }).then(response => response.json())
+
+const getOutgoingMessages = (userId) =>
+    fetch(`http://localhost:8181/api/users/${userId}/messages/outgoing`, {
+        method: 'GET',
+        credentials: 'include'
+    }).then(response => response.json())
+
 export default {
-    sendMessage
+    sendMessage,
+    getIncomingMessages,
+    getOutgoingMessages
 }
