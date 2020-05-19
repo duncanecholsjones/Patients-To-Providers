@@ -9,7 +9,9 @@ class ProfileComponent extends React.Component {
     state = {
         user: {},
         incomingMessages: [],
-        sentMessages: []
+        sentMessages: [],
+        showIncoming: false,
+        showSent: false
     }
 
     componentDidMount() {
@@ -22,6 +24,29 @@ class ProfileComponent extends React.Component {
         })
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.sentMessages !== this.state.sentMessages) {
+            MessageService.getOutgoingMessages(this.state.user.userId)
+                .then(actualMessages => this.setState({ sentMessages: actualMessages }))
+        }
+    }
+
+    sendMessage = (fromUserId, toUserId, messageText) => {
+        var message = {}
+        message['fromUserId'] = fromUserId
+        message['toUserId'] = toUserId
+        message['messageText'] = messageText
+        MessageService.sendMessage(message)
+    }
+
+    toggleIncoming() {
+        this.setState({ showIncoming: !this.state.showIncoming })
+    }
+
+    toggleSent() {
+        this.setState({ showSent: !this.state.showSent })
+    }
+
     render() {
         return (
             <div className="container-fluid">
@@ -30,7 +55,6 @@ class ProfileComponent extends React.Component {
                         <h5>You are not logged in. <a href="/login">Go to login</a></h5>
                     </div>
                 }
-
 
                 {this.state.user.username &&
                     <div>
@@ -66,36 +90,47 @@ class ProfileComponent extends React.Component {
                             <div className="col-sm-4">
                                 <div className="jumbotron message-center-jumbotron">
                                     <div className="row">
-                                        <h5>Message Center</h5>
+                                        <h4>Message Center</h4>
                                     </div>
                                     <hr className="my-4" />
                                     <div className="row">
-                                        <h6>Incoming messages:</h6>
-                                        <hr></hr>
-                                        <ul className="container-fluid incoming-message-div">
-                                            {
-                                                this.state.incomingMessages.map((message, index) => {
-                                                    return <MessageComponent
-                                                        key={message.id}
-                                                        message={message}
-                                                    />
-                                                })
-                                            }
-                                        </ul>
+                                        <button onClick={() => this.toggleIncoming()} type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            View incoming messages
+                                        </button>
+                                        {this.state.showIncoming &&
+                                            <ul className="container-fluid incoming-message-div">
+                                                {
+                                                    this.state.incomingMessages.map((message, index) => {
+                                                        return <MessageComponent
+                                                            key={message.id}
+                                                            userId={this.state.user.userId}
+                                                            message={message}
+                                                            sendMessage={this.sendMessage}
+                                                        />
+                                                    })
+                                                }
+                                            </ul>
+                                        }
                                     </div>
+                                    <hr className="my-4" />
                                     <div className="row">
-                                        <h6>Sent messages:</h6>
-                                        <hr></hr>
-                                        <ul className="container-fluid sent-message-div">
-                                            {
-                                                this.state.sentMessages.map((message, index) => {
-                                                    return <MessageComponent
-                                                        key={message.id}
-                                                        message={message}
-                                                    />
-                                                })
-                                            }
-                                        </ul>
+                                        <button onClick={() => this.toggleSent()} type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            View sent messages
+                                        </button>
+                                        {this.state.showSent &&
+                                            <ul className="container-fluid sent-message-div">
+                                                {
+                                                    this.state.sentMessages.map((message, index) => {
+                                                        return <MessageComponent
+                                                            key={message.id}
+                                                            userId={this.state.user.userId}
+                                                            message={message}
+                                                            sendMessage={this.sendMessage}
+                                                        />
+                                                    })
+                                                }
+                                            </ul>
+                                        }
                                     </div>
                                 </div>
                             </div>

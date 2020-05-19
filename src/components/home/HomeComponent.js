@@ -1,5 +1,6 @@
 import React from 'react';
 import UserService from '../../services/UserService';
+import './HomeComponentStyles.css';
 
 class HomeComponent extends React.Component {
 
@@ -11,6 +12,13 @@ class HomeComponent extends React.Component {
     // Need to use redux more here and add the user profile to the state w/ actions and reducers
     componentDidMount() {
         UserService.getLoggedInUser().then(actualUser => this.setState({ user: actualUser }))
+        this.playVideo()
+    }
+
+    playVideo() {
+        // Get the video
+        var video = document.getElementById("myVideo");
+        video.play();
     }
 
     handleLogout() {
@@ -23,9 +31,17 @@ class HomeComponent extends React.Component {
 
     render() {
         return (
-            <div className="container-fluid">
+            <div className="container">
+                {/* Source: https://www.w3schools.com/howto/howto_css_fullscreen_video.asp */}
+                <div class="fullscreen-bg">
+                    <video loop muted autoplay class="fullscreen-bg__video" id="myVideo">
+                        <source src={require('./patientvideo.mp4')} type="video/webm" />
+                    </video>
+                </div>
+
                 <div className="jumbotron">
                     
+
                     {
                         this.state.user.username &&
                         <div className="row">
@@ -33,6 +49,7 @@ class HomeComponent extends React.Component {
                             <h1>Logged in as {this.state.user.username}</h1>
                         </div>
                     }
+                    <hr className="my-4"></hr>
                     {
                         this.state.user.username &&
                         <h1 className="display-4">Hello, {this.state.user.firstName}!</h1>
