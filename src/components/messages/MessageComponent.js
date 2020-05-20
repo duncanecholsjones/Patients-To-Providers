@@ -15,6 +15,10 @@ class MessageComponent extends React.Component {
         this.setState({replyMode: false})
     }
 
+    handleReplyMode() {
+        this.setState({ replyMode: true })
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -29,7 +33,7 @@ class MessageComponent extends React.Component {
                         <div className="card-body">
                             <p className="card-text">{this.props.message.messageText}</p>
                             {!this.state.replyMode &&
-                                <button onClick={() => this.setState({ replyMode: true })} className="btn btn-primary">Reply</button>
+                                <button onClick={() => this.handleReplyMode()} className="btn btn-primary">Reply</button>
                             }
                             {
                                 this.state.replyMode &&

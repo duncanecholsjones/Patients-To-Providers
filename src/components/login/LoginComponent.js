@@ -69,7 +69,7 @@ class LoginComponent extends React.Component {
                     <p className="lead">
                         <form>
                             <div className="form-group">
-                                <label for="usernameInput">Username</label>
+                                <label htmlFor="usernameInput">Username</label>
                                 <input type="text" className="form-control"
                                     onChange={(e) => {
                                         e.persist()
@@ -78,7 +78,7 @@ class LoginComponent extends React.Component {
                                     id="usernameInput" placeholder="Enter your username" />
                             </div>
                             <div className="form-group">
-                                <label for="passwordInput">Password</label>
+                                <label htmlFor="passwordInput">Password</label>
                                 <input type="password" className="form-control"
                                     onChange={(e) => {
                                         e.persist()

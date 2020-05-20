@@ -33,8 +33,8 @@ class HomeComponent extends React.Component {
         return (
             <div className="container">
                 {/* Source: https://www.w3schools.com/howto/howto_css_fullscreen_video.asp */}
-                <div class="fullscreen-bg">
-                    <video loop muted autoplay class="fullscreen-bg__video" id="myVideo">
+                <div className="fullscreen-bg">
+                    <video loop muted autoPlay className="fullscreen-bg__video" id="myVideo">
                         <source src={require('./patientvideo.mp4')} type="video/webm" />
                     </video>
                 </div>

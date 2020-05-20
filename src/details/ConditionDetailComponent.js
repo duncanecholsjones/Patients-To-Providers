@@ -17,6 +17,23 @@ class ConditionDetailComponent extends React.Component {
         SearchService.getConditionDetails(this.props.conditionId).then(details => this.setState({ conditionDetails: details }))
     }
 
+    handleJoin() {
+        let condition = this.state.conditionDetails
+        condition['apiConditionId'] = this.props.conditionId
+        UserService.addConditionForUser(condition)
+        // then maybe we want to update our page so that when the user clicks 
+        // "join community", it shows in their profile with other suggested
+        // people with that health problem
+    }
+
+    handleLogout() {
+        UserService.logout().then(response =>
+            this.setState(prevState => ({
+                user: {}
+            }))
+        )
+    }
+
     render() {
         return (
             <div className="container-fluid">
@@ -27,11 +44,12 @@ class ConditionDetailComponent extends React.Component {
                     </div>
                 }
                 {this.state.conditionDetails.Description &&
-                    <div className="container-fluid">
-                        <p>{this.state.conditionDetails.ProfName} (also known as {this.state.conditionDetails.Name})</p>
+                    <div className="jumbotron">
+                        <p className="lead">{this.state.conditionDetails.ProfName} (also known as {this.state.conditionDetails.Name})</p>
                         <br/>
                         <h5>Description</h5>
                         <p>{this.state.conditionDetails.DescriptionShort}</p>
+                        <button onClick={() => this.handleJoin()} className="btn btn-primary">Join this community</button>
                         {!this.state.learnMore &&
                             <button onClick={() => this.setState({ learnMore: true })} className="btn btn-primary">Learn more</button>
                         }

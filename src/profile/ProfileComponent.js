@@ -11,7 +11,8 @@ class ProfileComponent extends React.Component {
         incomingMessages: [],
         sentMessages: [],
         showIncoming: false,
-        showSent: false
+        showSent: false,
+        editingMode: false
     }
 
     componentDidMount() {
@@ -25,7 +26,8 @@ class ProfileComponent extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.sentMessages !== this.state.sentMessages) {
+        if (prevState.sentMessages.length !== this.state.sentMessages.length ||
+            !prevState.sentMessages.every((value, index) => value === this.state.sentMessages[index])) {
             MessageService.getOutgoingMessages(this.state.user.userId)
                 .then(actualMessages => this.setState({ sentMessages: actualMessages }))
         }
@@ -45,6 +47,28 @@ class ProfileComponent extends React.Component {
 
     toggleSent() {
         this.setState({ showSent: !this.state.showSent })
+    }
+
+    handleLogout() {
+        UserService.logout().then(response =>
+            this.setState({ user: {} })
+        )
+    }
+
+    handleEditMode = () => {
+        this.setState({
+            editingMode: !this.state.editingMode
+        })
+    }
+
+    saveProfileChanges = () => {
+        this.handleEditMode()
+        UserService.updateUser(this.state.user.userId, this.state.user)
+            .then(updatedUser =>
+                this.setState({
+                    user: updatedUser
+                })
+            )
     }
 
     render() {
@@ -76,10 +100,67 @@ class ProfileComponent extends React.Component {
                                             </div>
                                         </div>
                                         <div className="col-sm-5">
-                                            <p className="lead">Name: {this.state.user.firstName} {this.state.user.lastName}</p>
-                                            <p className="lead">Email: {this.state.user.email}</p>
-                                            <p className="lead">Phone: {this.state.user.phone}</p>
-                                            <p className="lead">User type: {this.state.user.role}</p>
+                                            { this.state.editingMode === false &&
+                                                <div>
+                                                    <button onClick={() => this.handleEditMode()}>Edit your profile</button>
+                                                    <p className="lead">Name: {this.state.user.firstName} {this.state.user.lastName}</p>
+                                                    <p className="lead">Email: {this.state.user.email}</p>
+                                                    <p className="lead">Phone: {this.state.user.phone}</p>
+                                                    <p className="lead">User type: {this.state.user.role}</p>
+                                                </div>
+                                            }
+                                            { this.state.editingMode === true &&
+                                                <p className="lead">
+                                                    <form>
+                                                        <div className="form-group">
+                                                            <label htmlFor="usernameInput">Username:
+                                                                <input
+                                                                    defaultValue={this.state.user.username}
+                                                                    onChange={(e) => this.setState({ user: { ...this.state.user, username: e.target.value } })}
+                                                                />
+                                                            </label>
+
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <label htmlFor="firstNameInput">First name:
+                                                                <input
+                                                                    defaultValue={this.state.user.firstName}
+                                                                    onChange={(e) => this.setState({ user: { ...this.state.user, firstName: e.target.value } })}
+                                                                />
+                                                            </label>
+
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <label htmlFor="lastNameInput">Last name:
+                                                                <input
+                                                                    defaultValue={this.state.user.lastName}
+                                                                    onChange={(e) => this.setState({ user: { ...this.state.user, lastName: e.target.value } })}
+                                                                />
+                                                            </label>
+
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <label htmlFor="emailInput">Email:
+                                                                <input
+                                                                    defaultValue={this.state.user.email}
+                                                                    onChange={(e) => this.setState({ user: { ...this.state.user, email: e.target.value } })}
+                                                                />
+                                                            </label>
+
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <label htmlFor="phoneInput">Phone:
+                                                                <input
+                                                                    defaultValue={this.state.user.phone}
+                                                                    onChange={(e) => this.setState({ user: { ...this.state.user, phone: e.target.value } })}
+                                                                />
+                                                            </label>
+
+                                                        </div>
+                                                        <button onClick={() => this.saveProfileChanges()}>Save your profile changes</button>
+                                                    </form>
+                                                </p>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +175,7 @@ class ProfileComponent extends React.Component {
                                     </div>
                                     <hr className="my-4" />
                                     <div className="row">
-                                        <button onClick={() => this.toggleIncoming()} type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button onClick={() => this.toggleIncoming()} type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             View incoming messages
                                         </button>
                                         {this.state.showIncoming &&
@@ -114,7 +195,7 @@ class ProfileComponent extends React.Component {
                                     </div>
                                     <hr className="my-4" />
                                     <div className="row">
-                                        <button onClick={() => this.toggleSent()} type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button onClick={() => this.toggleSent()} type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             View sent messages
                                         </button>
                                         {this.state.showSent &&
