@@ -71,6 +71,31 @@ class ProfileComponent extends React.Component {
             )
     }
 
+    handleDeleteProfile = () => {
+        if (window.confirm("Are you sure you want to delete your profile?")) {
+            UserService.deleteUser(this.state.user.userId).then(response => {
+                this.props.history.push('/')
+            }
+            )
+        } else {
+            return
+        }
+    }
+
+    updateProfilePicture() {
+        // Currently, not working due to local resource issues. Would need to figure out a way to 
+        // either enable local links (less preferred, security issue) or instead save image with upload
+        // and then render that saved image
+        console.log(document.getElementById('profile-img-input').value )
+        this.setState({user: { ...this.state.user, imageURL: document.getElementById('profile-img-input').value }})
+        UserService.updateUser(this.state.user.userId, this.state.user)
+            .then(updatedUser =>
+                this.setState({
+                    user: updatedUser
+                })
+            )
+    }
+
     render() {
         return (
             <div className="container-fluid">
@@ -94,23 +119,32 @@ class ProfileComponent extends React.Component {
                                     <div className="row">
                                         <div className="col-sm-7">
                                             <div className="card profile-card">
-                                                <img className="card-img-top" src={require('../../src/profile/emptyprofile.png')} alt="Not found" />
+
+                                                <input type='file' id="profile-img-input" onChange={() => this.updateProfilePicture()} />
+                                                <object className="card-img-top" data={require('../../src/profile/emptyprofile.png')} type="image/png">
+                                                    <img className="card-img-top" src={this.state.user.imageURL}
+                                                        alt="Not found" />
+                                                </object>
+                                                {/* <img className="card-img-top" src={this.state.user.imageURL}
+                                                    defaultValue={require('../../src/profile/emptyprofile.png')} alt="Not found" /> */}
+
                                                 <hr className="my-4" />
                                                 <h5 className="card-title"> {this.state.user.firstName} {this.state.user.lastName}</h5>
                                             </div>
                                         </div>
                                         <div className="col-sm-5">
-                                            { this.state.editingMode === false &&
+                                            {this.state.editingMode === false &&
                                                 <div>
-                                                    <button onClick={() => this.handleEditMode()}>Edit your profile</button>
+                                                    <button className="btn btn-warning" onClick={() => this.handleEditMode()}>Edit your profile</button>
                                                     <p className="lead">Name: {this.state.user.firstName} {this.state.user.lastName}</p>
                                                     <p className="lead">Email: {this.state.user.email}</p>
                                                     <p className="lead">Phone: {this.state.user.phone}</p>
                                                     <p className="lead">User type: {this.state.user.role}</p>
                                                 </div>
                                             }
-                                            { this.state.editingMode === true &&
+                                            {this.state.editingMode === true &&
                                                 <p className="lead">
+                                                    <button className="btn btn-danger" onClick={() => this.handleDeleteProfile()}>Delete your profile</button>
                                                     <form>
                                                         <div className="form-group">
                                                             <label htmlFor="usernameInput">Username:

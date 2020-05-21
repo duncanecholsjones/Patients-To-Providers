@@ -45,11 +45,14 @@ class ConditionDetailComponent extends React.Component {
                 }
                 {this.state.conditionDetails.Description &&
                     <div className="jumbotron">
+                        {
+                            this.state.user.username &&
+                            <button onClick={() => this.handleJoin()} className="btn btn-primary">Join this community</button>
+                        }
                         <p className="lead">{this.state.conditionDetails.ProfName} (also known as {this.state.conditionDetails.Name})</p>
                         <br/>
                         <h5>Description</h5>
                         <p>{this.state.conditionDetails.DescriptionShort}</p>
-                        <button onClick={() => this.handleJoin()} className="btn btn-primary">Join this community</button>
                         {!this.state.learnMore &&
                             <button onClick={() => this.setState({ learnMore: true })} className="btn btn-primary">Learn more</button>
                         }

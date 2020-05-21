@@ -60,6 +60,12 @@ const updateUser = (userId, newUser) =>
         credentials: 'include'
     }).then(response => response.json())
 
+const deleteUser = (userId) =>
+    fetch(`http://localhost:8181/api/user/${userId}/delete`, {
+        method: 'DELETE',
+        credentials: "include"
+    }).then(response => response)
+
 export default {
     createUser,
     getLoggedInUser,
@@ -67,5 +73,6 @@ export default {
     login,
     logout,
     addConditionForUser,
-    updateUser
+    updateUser,
+    deleteUser
 }
