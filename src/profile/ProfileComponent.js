@@ -1,6 +1,7 @@
 import React from 'react';
 import UserService from '../services/UserService';
 import MessageService from '../services/MessageService';
+import SearchService from '../services/SearchService';
 import MessageComponent from '../components/messages/MessageComponent';
 import './ProfileComponentStyles.css';
 
@@ -8,8 +9,11 @@ class ProfileComponent extends React.Component {
 
     state = {
         user: {},
+        condition: {},
+        commonConditionId: null,
         incomingMessages: [],
         sentMessages: [],
+        otherUsersWithCondition: [],
         showIncoming: false,
         showSent: false,
         editingMode: false
@@ -22,6 +26,12 @@ class ProfileComponent extends React.Component {
                 .then(actualMessages => this.setState({ incomingMessages: actualMessages }))
             MessageService.getOutgoingMessages(this.state.user.userId)
                 .then(actualMessages => this.setState({ sentMessages: actualMessages }))
+            UserService.getOtherUsersWithCondition().then(actualUsers => {
+                this.setState({ otherUsersWithCondition: actualUsers })
+                SearchService.getConditionDetails(this.findCommonCondition()).then(actualCondition =>
+                    this.setState({ condition: actualCondition })
+                )
+            })
         })
     }
 
@@ -31,6 +41,17 @@ class ProfileComponent extends React.Component {
             MessageService.getOutgoingMessages(this.state.user.userId)
                 .then(actualMessages => this.setState({ sentMessages: actualMessages }))
         }
+    }
+
+    findCommonCondition() {
+        const commonConditions = this.state.user.conditions.filter(value =>
+            this.state.otherUsersWithCondition[0].conditions.includes(value))
+        const index = commonConditions.indexOf("");
+        if (index > -1) {
+            commonConditions.splice(index, 1);
+        }
+        this.setState({ commonConditionId: commonConditions[0] })
+        return commonConditions[0]
     }
 
     sendMessage = (fromUserId, toUserId, messageText) => {
@@ -86,8 +107,8 @@ class ProfileComponent extends React.Component {
         // Currently, not working due to local resource issues. Would need to figure out a way to 
         // either enable local links (less preferred, security issue) or instead save image with upload
         // and then render that saved image
-        console.log(document.getElementById('profile-img-input').value )
-        this.setState({user: { ...this.state.user, imageURL: document.getElementById('profile-img-input').value }})
+        console.log(document.getElementById('profile-img-input').value)
+        this.setState({ user: { ...this.state.user, imageURL: document.getElementById('profile-img-input').value } })
         UserService.updateUser(this.state.user.userId, this.state.user)
             .then(updatedUser =>
                 this.setState({
@@ -250,6 +271,23 @@ class ProfileComponent extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        {this.state.otherUsersWithCondition &&
+                            <div className="jumbotron">
+                                <p className="lead">Other users in the <a href={`/search/${this.state.commonConditionId}`}>{this.state.condition.Name}</a> community </p>
+                                <div className="row">
+                                    {this.state.otherUsersWithCondition.map((user, index) =>
+                                        <div className="card other-user-condition-card">
+                                            <img className="card-img-top" src={require('../../src/profile/emptyprofile.png')} alt="Card image cap" />
+                                            <div className="card-body">
+                                                <h5 className="card-title">{user.username}</h5>
+                                                <a href={``} className="btn btn-primary">See profile</a>
+                                            </div>
+                                        </div>
+                                    )
+                                    }
+                                </div>
+                            </div>
+                        }
                     </div>
                 }
             </div>

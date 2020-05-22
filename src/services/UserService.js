@@ -66,6 +66,12 @@ const deleteUser = (userId) =>
         credentials: "include"
     }).then(response => response)
 
+const getOtherUsersWithCondition = () =>
+    fetch(`http://localhost:8181/api/user/conditions/getOthers`, {
+        method: 'GET',
+        credentials: 'include'
+    }).then(response => response.json())
+
 export default {
     createUser,
     getLoggedInUser,
@@ -74,5 +80,6 @@ export default {
     logout,
     addConditionForUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getOtherUsersWithCondition
 }

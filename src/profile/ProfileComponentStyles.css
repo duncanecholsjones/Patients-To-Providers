@@ -3,7 +3,7 @@
     text-align: center;
 }
 
-.profile-card {
+.profile-card, .other-user-condition-card {
     width: 18rem;
     text-align: center;
 }
