@@ -1,3 +1,7 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// React Login Component, used to render our Login page
+
 import React from 'react';
 import UserService from '../../services/UserService';
 import './LoginComponentStyles.css'
@@ -15,10 +19,10 @@ class LoginComponent extends React.Component {
         UserService.getLoggedInUser().then(actualUser => this.setState({ user: actualUser }))
     }
 
+    // Allow user to log in and create a session, encorporates check for correct user credentials
     handleLogin() {
         UserService.login({username: this.state.username, password: this.state.password})
         .then(user => {
-            console.log(user)
             if (user) {
                 this.props.history.push('/')
             } else {
@@ -26,15 +30,8 @@ class LoginComponent extends React.Component {
             }
         })
     }
-    
-    // UserService.login({username: this.state.username, password: this.state.password})
-    // .then(function(response) {
-    //     this.props.history.push('/')
-    //   }, function(error) {
-    //     this.setState({loginFailed: true})
-    //   })
-    // }
 
+    // Allows user to logout and destroy session
     handleLogout() {
         UserService.logout().then(response =>
             this.setState(prevState => ({
@@ -49,7 +46,7 @@ class LoginComponent extends React.Component {
     render() {
         return (
             <div className="container-fluid login-container">
-                
+                {/* Display logout button only if user is logged in */}
                 { this.state.user &&
                 <div className="row top-row">
                     <button onClick={() => this.handleLogout()} className="btn btn-secondary">Logout</button>
@@ -60,6 +57,7 @@ class LoginComponent extends React.Component {
                     <a href="/">Home</a>
                     <h1 className="display-4">Log into your account</h1>
                     <p className="lead">Enter your username and password.</p>
+                    {/* Check for user logging in with correct credentials */}
                     {
                         this.state.loginFailed === true && 
                         <div className="row fail-row">

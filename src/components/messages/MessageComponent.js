@@ -1,3 +1,7 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// React Message Component, used to render messages sent to and from users
+
 import React from 'react';
 import './MessageComponentStyles.css';
 
@@ -8,6 +12,7 @@ class MessageComponent extends React.Component {
         replyMode: false
     }
 
+    // Send message to another user
     handleMessageSend() {
         this.props.sendMessage(this.props.userId, 
             this.props.message.senderInfo.userId, 
@@ -22,6 +27,7 @@ class MessageComponent extends React.Component {
     render() {
         return (
             <React.Fragment>
+                {/* Render data about the sender of the message */}
                 {
                     this.props.message.senderInfo &&
                     <div className="card">
@@ -50,6 +56,7 @@ class MessageComponent extends React.Component {
                         </div>
                     </div>
                 }
+                {/* Render information about recipient of message */}
                 {
                     this.props.message.recipientInfo &&
                     <div className="card">

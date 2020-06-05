@@ -1,3 +1,7 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// REST API endpoints for Messages
+
 const sendMessage = (message) =>
     fetch(`http://localhost:8181/api/sendMessage`, {
         method: 'POST',

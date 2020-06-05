@@ -1,15 +1,17 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// React Home Component, used to render our Home page
+
 import React from 'react';
 import UserService from '../../services/UserService';
 import './HomeComponentStyles.css';
 
 class HomeComponent extends React.Component {
 
-
     state = {
         user: {}
     }
 
-    // Need to use redux more here and add the user profile to the state w/ actions and reducers
     componentDidMount() {
         UserService.getLoggedInUser().then(actualUser => this.setState({ user: actualUser }))
         this.playVideo()
@@ -21,6 +23,7 @@ class HomeComponent extends React.Component {
         video.play();
     }
 
+    // Allows user to logout and destroy session
     handleLogout() {
         UserService.logout().then(response =>
             this.setState(prevState => ({
@@ -40,8 +43,7 @@ class HomeComponent extends React.Component {
                 </div>
 
                 <div className="jumbotron">
-                    
-
+                    {/* Render only if user is logged in */}
                     {
                         this.state.user.username &&
                         <div className="row">
@@ -54,6 +56,7 @@ class HomeComponent extends React.Component {
                         this.state.user.username &&
                         <h1 className="display-4">Hello, {this.state.user.firstName}!</h1>
                     }
+                    {/* Render only if user is not logged in */}
                     {
                         !this.state.user.username &&
                         <h1 className="display-4">Hello, Guest!</h1>

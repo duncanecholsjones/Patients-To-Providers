@@ -1,3 +1,7 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// React ConditionDetail Component, used to render our Details page for a given condition
+
 import React from 'react';
 import UserService from '../services/UserService';
 import SearchService from '../services/SearchService';
@@ -6,8 +10,6 @@ class ConditionDetailComponent extends React.Component {
 
     state = {
         user: {},
-        // Gives 'Description', 'DescriptionShort', 'MedicalCondition', 'Name', 'PossibleSymptoms',
-        // 'ProfName', 'Synonyms', 'TreatmentDescription'
         conditionDetails: {},
         learnMore: false
     }
@@ -17,13 +19,13 @@ class ConditionDetailComponent extends React.Component {
         SearchService.getConditionDetails(this.props.conditionId).then(details => this.setState({ conditionDetails: details }))
     }
 
+    // Allow user to add this condition to their list of conditions. Allows us to know what conditions
+    // that user suffers from and to suggest other patients or providers who are associated with that
+    // condition
     handleJoin() {
         let condition = this.state.conditionDetails
         condition['apiConditionId'] = this.props.conditionId
         UserService.addConditionForUser(condition)
-        // then maybe we want to update our page so that when the user clicks 
-        // "join community", it shows in their profile with other suggested
-        // people with that health problem
     }
 
     handleLogout() {

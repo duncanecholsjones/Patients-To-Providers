@@ -1,3 +1,9 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// REST API endpoints for Search. Uses Symptom Checker API 
+// (https://rapidapi.com/priaid/api/symptom-checker/)
+// For all data on conditions
+
 export const getConditions = () =>
     fetch("https://priaid-symptom-checker-v1.p.rapidapi.com/issues?language=en-gb", {
         "method": "GET",

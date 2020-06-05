@@ -1,3 +1,7 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// React Search Component, used to render our Search page where a user will search for a condition
+
 import React from 'react';
 import UserService from '../../services/UserService';
 import SearchService from '../../services/SearchService';
@@ -12,14 +16,15 @@ class SearchComponent extends React.Component {
         conditionsArray: []
     }
 
+    // Get logged in user and then user Redux to call SymptomChecker API and store all conditions
+    // in the store (via getConditionsAction())
     componentDidMount() {
         UserService.getLoggedInUser().then(actualUser => this.setState({ user: actualUser }))
         this.props.getConditionsAction()
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // shouldComponentUpdate() {
-        // componentWillReceiveProps() {
+        // Push all conditions from store into local array to enable autocomplete functionality
         if (prevProps.conditions !== this.props.conditions) {
             this.props.conditions.forEach(element => {
                 this.state.conditionsArray.push(element.Name)
@@ -134,6 +139,7 @@ class SearchComponent extends React.Component {
         });
     }
 
+    // User URL to send us to that conditions Details page
     handleSearch() {
         let searchId = this.props.conditions.find(condition => condition.Name === document.getElementById("myInput").value).ID
         this.props.history.push(`/search/${searchId}`)
@@ -173,6 +179,7 @@ class SearchComponent extends React.Component {
     }
 }
 
+// Redux store mapper
 const stateToPropertyMapper = (state) => {
     return {
         conditions: state.conditions.conditions

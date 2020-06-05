@@ -1,3 +1,7 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// React Profile Component, used to render our Profile page for all of the users' information
+
 import React from 'react';
 import UserService from '../services/UserService';
 import MessageService from '../services/MessageService';
@@ -5,6 +9,9 @@ import SearchService from '../services/SearchService';
 import MessageComponent from '../components/messages/MessageComponent';
 import './ProfileComponentStyles.css';
 
+// Display the logged in users' data as well as incoming and outgoing messages, and suggests other users
+// who have the same conditions that they do. Then, allows them to easily go to that other person's 
+// profile and message them
 class ProfileComponent extends React.Component {
 
     state = {
@@ -19,6 +26,8 @@ class ProfileComponent extends React.Component {
         editingMode: false
     }
 
+    // On mount, get logged in user, incmoing and outgoing messages, and find other users with a 
+    // randomly selected condition that that user suffers from
     componentDidMount() {
         UserService.getLoggedInUser().then(actualUser => {
             this.setState({ user: actualUser })
@@ -35,6 +44,7 @@ class ProfileComponent extends React.Component {
         })
     }
 
+    // Update inbox / outbox for a sent or receieved message without page refresh
     componentDidUpdate(prevProps, prevState) {
         if (prevState.sentMessages.length !== this.state.sentMessages.length ||
             !prevState.sentMessages.every((value, index) => value === this.state.sentMessages[index])) {
@@ -43,6 +53,8 @@ class ProfileComponent extends React.Component {
         }
     }
 
+    // Function to identify which condition is the one that both the logged in user and each suggested
+    // user have in common
     findCommonCondition() {
         const commonConditions = this.state.user.conditions.filter(value =>
             this.state.otherUsersWithCondition[0].conditions.includes(value))
@@ -54,6 +66,7 @@ class ProfileComponent extends React.Component {
         return commonConditions[0]
     }
 
+    // Send message
     sendMessage = (fromUserId, toUserId, messageText) => {
         var message = {}
         message['fromUserId'] = fromUserId
@@ -62,6 +75,7 @@ class ProfileComponent extends React.Component {
         MessageService.sendMessage(message)
     }
 
+    // These toggles allow us to make a drop down view for all messages
     toggleIncoming() {
         this.setState({ showIncoming: !this.state.showIncoming })
     }
@@ -82,6 +96,7 @@ class ProfileComponent extends React.Component {
         })
     }
 
+    // CRUD functionality for profile
     saveProfileChanges = () => {
         this.handleEditMode()
         UserService.updateUser(this.state.user.userId, this.state.user)

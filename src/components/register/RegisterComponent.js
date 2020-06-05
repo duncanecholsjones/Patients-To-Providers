@@ -1,3 +1,7 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// React Register Component, used to render our Register page
+
 import React from 'react';
 import UserService from '../../services/UserService'
 
@@ -16,6 +20,7 @@ class RegisterComponent extends React.Component {
         }
     }
 
+    // Check that passwords match
     validatePasswords() {
         if (this.state.user.password !== this.state.user.confirmPassword) {
             document.getElementById("confirmPasswordField").innerHTML = "Passwords not matching!";
@@ -25,6 +30,7 @@ class RegisterComponent extends React.Component {
         return true;
     }
 
+    // User UserService to create user and then route to Home page
     registerUser() {
         this.validatePasswords()
         UserService.createUser(this.state.user).then(response => {

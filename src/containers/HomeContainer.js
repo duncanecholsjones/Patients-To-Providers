@@ -1,3 +1,8 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// React Home Container, this serves as the container for all child components, taking on the
+// responsibility of configuring all routing and the Redux store for the application
+
 import React from 'react';
 import { Provider } from "react-redux";
 import {Route} from "react-router-dom";
@@ -11,6 +16,7 @@ import ConditionDetailComponent from '../details/ConditionDetailComponent';
 import ProfileComponent from '../profile/ProfileComponent';
 import VisitOtherProfileComponent from '../profile/VisitOtherProfileComponent';
 
+// create rootReducer and store so we will be able to access conditions from a single source
 const rootReducer = combineReducers({
     conditions: conditionReducer
 })
@@ -22,6 +28,7 @@ class HomeContainer extends React.Component {
     render() {
         return (
 
+            // Route all components and give access to store through Provider
             <Provider store={store}>
                 <div>
                     <Route path="/" exact={true} 

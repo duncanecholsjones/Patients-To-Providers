@@ -1,3 +1,7 @@
+// Duncan Echols-Jones
+// 4/3/2020
+// REST API endoint for Users
+
 const createUser = (user) =>
     fetch(`http://localhost:8181/api/users`, {
         method: 'POST',
