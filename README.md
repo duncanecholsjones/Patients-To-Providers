@@ -1,3 +1,23 @@
+#Patients-To-Providers application. Developed as an opportunity to further full stack knowledge.
+
+Uses React / Redux frontend, NodeJS middle tier, and mySQL backend to create a web application that 
+allows patients to research a condition and connect with a physician specialized in that condition.
+
+SPA that features the following pages: Login, Profile, Search, Details, Messages. Uses session 
+information to control what content a user will see. 
+
+Currently, integrates with RapidAPI Medical to get detailed information about a user-inputted
+condition and message other users about it. That condition will be stored in the mySQL database
+and other users who have publicly disclosed that they suffer from that condition will be suggested
+to our user. Search field has auto-populating capability. Users are differentied by patients vs.
+providers and user-type affects what each user can do.
+
+Integrates REST API’s, Bootstrap, Git, GitHub, Heroku technologies.
+
+See details below to run application.
+
+-------------------------------------------------------------------------------------------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
