@@ -1,5 +1,5 @@
 // Duncan Echols-Jones
-// 4/3/2020
+// 2/18/2021
 // React Register Component, used to render our Register page
 
 import React from 'react';

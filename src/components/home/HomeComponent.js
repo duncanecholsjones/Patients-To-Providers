@@ -1,5 +1,5 @@
 // Duncan Echols-Jones
-// 4/3/2020
+// 2/18/2021
 // React Home Component, used to render our Home page
 
 import React from 'react';

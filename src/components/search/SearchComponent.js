@@ -1,5 +1,5 @@
 // Duncan Echols-Jones
-// 4/3/2020
+// 2/18/2021
 // React Search Component, used to render our Search page where a user will search for a condition
 
 import React from 'react';

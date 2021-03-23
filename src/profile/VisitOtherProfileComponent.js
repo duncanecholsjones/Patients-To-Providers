@@ -1,5 +1,5 @@
 // Duncan Echols-Jones
-// 4/3/2020
+// 2/18/2021
 // React VisitOtherProfile Component, used to render our OtherProfile component, giving us details about
 // another user's information
 

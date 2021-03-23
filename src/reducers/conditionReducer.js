@@ -1,5 +1,5 @@
 // Duncan Echols-Jones
-// 4/3/2020
+// 2/18/2021
 // Redux reducer for conditions
 
 import {GET_CONDITIONS} from '../actions/conditionActions'

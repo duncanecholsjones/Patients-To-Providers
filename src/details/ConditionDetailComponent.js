@@ -1,5 +1,5 @@
 // Duncan Echols-Jones
-// 4/3/2020
+// 2/18/2021
 // React ConditionDetail Component, used to render our Details page for a given condition
 
 import React from 'react';

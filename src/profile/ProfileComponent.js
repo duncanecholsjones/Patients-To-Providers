@@ -1,5 +1,5 @@
 // Duncan Echols-Jones
-// 4/3/2020
+// 2/18/2021
 // React Profile Component, used to render our Profile page for all of the users' information
 
 import React from 'react';
@@ -56,8 +56,13 @@ class ProfileComponent extends React.Component {
     // Function to identify which condition is the one that both the logged in user and each suggested
     // user have in common
     findCommonCondition() {
+        console.log(this.state.user.conditions)
+        console.log(this.state.otherUsersWithCondition)
+        console.log(this.state.otherUsersWithCondition[0].conditions)
         const commonConditions = this.state.user.conditions.filter(value =>
             this.state.otherUsersWithCondition[0].conditions.includes(value))
+        console.log("COMMON CONDITIONS")
+        console.log(commonConditions)
         const index = commonConditions.indexOf("");
         if (index > -1) {
             commonConditions.splice(index, 1);
@@ -295,7 +300,7 @@ class ProfileComponent extends React.Component {
                                             <img className="card-img-top" src={require('../../src/profile/emptyprofile.png')} alt="Card image cap" />
                                             <div className="card-body">
                                                 <h5 className="card-title">{user.username}</h5>
-                                                <a href={``} className="btn btn-primary">See profile</a>
+                                                <a href={`profile/${user.userId}`} className="btn btn-primary">See profile</a>
                                             </div>
                                         </div>
                                     )

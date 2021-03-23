@@ -1,10 +1,9 @@
 // Duncan Echols-Jones
-// 4/3/2020
+// 2/18/2021
 // React Message Component, used to render messages sent to and from users
 
 import React from 'react';
 import './MessageComponentStyles.css';
-
 
 class MessageComponent extends React.Component {
 
